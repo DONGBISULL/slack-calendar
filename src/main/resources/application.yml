@@ -1,0 +1,29 @@
+spring:
+  config:
+    import: optional:classpath:/vault-credentials.properties
+  application:
+    name: slack-calendar
+  cloud:
+    vault:
+      uri: 'http://localhost:8200'
+      authentication: APPROLE # ?? ??
+      scheme: http
+      app-role:
+        role-id: ${vault.role-id}
+        secret-id: ${vault.secret-id}
+      aws-ec2:
+        enabled: false
+      kv:
+        enabled: true     # KV Secret
+        default-context: myapp # 디폴트 경로
+
+logging:
+  level:
+    org.springframework.vault: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+
+server:
+  port: 8085
+
+vault:
+  config-path: 'myapp/data/config/path-mappings'
