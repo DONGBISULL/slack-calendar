@@ -3,6 +3,7 @@ package com.demo.slackcalendar.commons.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.vault.VaultException;
 import org.springframework.vault.core.VaultTemplate;
 import org.springframework.vault.support.VaultResponse;
 
@@ -17,17 +18,23 @@ public class VaultService {
     private final VaultTemplate vaultTemplate;
 
     public Map<String, Object> getSecrets(String path) {
-        try {
-            VaultResponse response = vaultTemplate.read(path);
-            if (response == null || response.getData() == null) {
-                return Collections.emptyMap();
-            }
-            Map<String, Object> outerData = response.getData();
-            return (Map<String, Object>) outerData.get("data");
-        } catch (Exception e) {
-            log.error("Vault read error: {}", e.getMessage(), e);
-            return Collections.emptyMap();
+        VaultResponse response = vaultTemplate.read(path);
+        if (response == null || response.getData() == null) {
+            throw new VaultException("Secret not found for path: " + path);
         }
+        Map<String, Object> outerData = response.getData();
+        return (Map<String, Object>) outerData.get("data");
+    }
+
+    public Map<String, Object> saveSecret(String path, Map<String, Object> payload) {
+
+        VaultResponse response = vaultTemplate.write(path, payload);
+
+        if (response == null || response.getData() == null) {
+            throw new VaultException("not allow save secret for path: " + path);
+        }
+
+        return response.getData();
     }
 
     public String getSecret(String path, String key) {

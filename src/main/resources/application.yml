@@ -27,3 +27,8 @@ server:
 
 vault:
   config-path: 'myapp/data/config/path-mappings'
+
+slack:
+  bot-id: ${slack.bot-id}
+  bot-token: ${slack.bot-token}
+  client-id: ${slack.bot-client-id}

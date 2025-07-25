@@ -28,7 +28,7 @@ vault write auth/approle/role/<ROLE_NAME> token_policies=<ROLE_POLICIES> token_t
 기존 등록된 권한된 사용자에게 권한 할당
 
 ```shell
-vault write auth/approle/role/<ROLE_NAME> token_policies="myapp-policy"
+vault write auth/approle/role/demo-role token_policies="myapp-policy"
 
 vault write auth/approle/role/<ROLE_NAME> token_policies=<ROLE_POLICIES> 
 ```
@@ -58,4 +58,34 @@ ROLE 역할 파일 수정하여 적용
 vault policy write myapp-policy ./policies/myapp-policy.hcl
 
 vault policy write <ROLE_POLICIES> <ROLE_POLICIES_FILE_PATH>
+```
+
+slack API 테스트 위한 URL 생성
+ngrok 사용
+
+```shell
+ngrok config add-authtoken $YOUR_AUTHTOKEN
+```
+
+Slack API 연계 시 참고 문서
+https://api.slack.com/apps
+
+https://api.slack.com/methods/chat.postMessage
+
+https://api.slack.com/methods/chat.postMessage/test
+
+https://api.slack.com/events/url_verification
+
+https://tools.slack.dev/java-slack-sdk/guides/supported-web-frameworks/?utm_source=chatgpt.com
+
+slack 테스트 앱 삭제
+
+관리 페이지에서 삭제 버튼 클릭 시 삭제 처리
+
+```
+https://app.slack.com/apps-manage/T097A5FR2E8/integrations/installed
+```
+
+```shell
+/invite @gcal
 ```

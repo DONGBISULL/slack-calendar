@@ -26,13 +26,18 @@ repositories {
 dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    // 연결 확인 페이지 생성
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.5.3'
+    // jpa
+//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.5.3'
+    // DB 연결
+//    implementation 'org.postgresql:postgresql:42.7.7'
+    // webflux 구현
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
     // vault
     implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:4.3.0'
     // 슬랙
-    implementation 'com.slack.api:bolt-jakarta-servlet:1.45.3'
-//    implementation("com.slack.api:bolt:1.45.3")
-//    implementation("com.slack.api:bolt-servlet:1.45.3")
-//    implementation("com.slack.api:bolt-jetty:1.45.3")
+    implementation("com.slack.api:slack-api-client:1.45.3")
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
