@@ -33,10 +33,10 @@ public class VaultPathCacheService {
     private String configPath;
 
     @Cacheable("vaultPathMappings")
-    public Map<String, String> getAllPaths() {
+    public Map<String, Object> getAllPaths() {
         try {
             log.info("Loading Vault path mappings from {}", configPath);
-            Map<String, String> valueMap = service.getSecrets(configPath);
+            Map<String, Object> valueMap = service.getSecrets(configPath);
             log.info("vaultPathMappings: {}", valueMap.size());
             return valueMap;
         } catch (Exception e) {
@@ -50,12 +50,12 @@ public class VaultPathCacheService {
             log.error("target key is  null");
             return null;
         }
-        Map<String, String> allPaths = self.getAllPaths();
+        Map<String, Object> allPaths = self.getAllPaths();
         if (allPaths == null) {
             log.error("vaultPathMappings is null");
             return null;
         }
-        return allPaths.get(key);
+        return allPaths.get(key).toString();
     }
 
     @Scheduled(fixedDelay = 60000 * 2)

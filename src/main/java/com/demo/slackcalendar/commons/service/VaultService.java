@@ -16,14 +16,14 @@ public class VaultService {
 
     private final VaultTemplate vaultTemplate;
 
-    public Map<String, String> getSecrets(String path) {
+    public Map<String, Object> getSecrets(String path) {
         try {
             VaultResponse response = vaultTemplate.read(path);
             if (response == null || response.getData() == null) {
                 return Collections.emptyMap();
             }
             Map<String, Object> outerData = response.getData();
-            return (Map<String, String>) outerData.get("data");
+            return (Map<String, Object>) outerData.get("data");
         } catch (Exception e) {
             log.error("Vault read error: {}", e.getMessage(), e);
             return Collections.emptyMap();
@@ -31,7 +31,7 @@ public class VaultService {
     }
 
     public String getSecret(String path, String key) {
-        return getSecrets(path).get(key);
+        return getSecrets(path).get(key).toString();
     }
 
 }
