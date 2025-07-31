@@ -16,6 +16,19 @@ spring:
       kv:
         enabled: true     # KV Secret
         default-context: myapp # 디폴트 경로
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: ex1234
+    url: jdbc:postgresql://localhost:5432/demo-db
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 logging:
   level:
@@ -30,5 +43,52 @@ vault:
 
 slack:
   bot-id: ${slack.bot-id}
-  bot-token: ${slack.bot-token}
-  client-id: ${slack.bot-client-id}
+  oauth:
+    # 봇 자체의 ID
+    client-id: ${slack.bot-client-id}
+    # 봇 ID 인증 위한 값
+    client-secret: ${slack.bot-client-secret}
+    redirect-uri: ${SLACK_REDIRECT_URI:https://flat-moments-prove.loca.lt/slack/auth}
+    # Bot Token Scopes
+    bot-scopes:
+      - usergroups:read
+      - app_mentions:read
+      - channels:history
+      - channels:join
+      - channels:read
+      - channels:write.invites
+      - chat:write
+      - chat:write.public
+      - commands
+      - groups:read
+      - groups:write
+      - im:write
+      - mpim:read
+      - reactions:write
+      - users:read
+
+    # User Token Scopes
+    user-scopes:
+      - admin.usergroups:read
+      - channels:read
+      - channels:write
+      - im:write
+      - mpim:write
+      - users:write
+    # OAuth URLs
+    authorize-url: https://slack.com/oauth/v2/authorize
+    token-url: https://slack.com/api/oauth.v2.access
+google:
+  oauth:
+    # 봇 자체의 ID
+    client-id: ${google.app-client-id}
+    # 봇 ID 인증 위한 값
+    client-secret: ${google.app-client-secret}
+    redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:8085/google/auth}
+    response-type: code
+    access-type: offline
+    prompt: consent
+    authorize-url: https://accounts.google.com/o/oauth2/v2/auth
+    scopes:
+      - https://www.googleapis.com/auth/calendar
+      - openid

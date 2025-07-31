@@ -20,13 +20,13 @@ public class SlackEventService {
 
     private VaultPathCacheService pathService;
 
-    @Value("${slack.bot-token}")
+    @Value("${slack.bot-client-secret}")
     private String botToken;
 
     public SlackEventService(VaultService service, WebClient.Builder webClientBuilder, VaultPathCacheService pathService) {
         this.service = service;
         this.webClient = webClientBuilder
-                .baseUrl("https://slack.com/api/")
+                .baseUrl("https://slack.com/api")
                 .defaultHeader("Content-Type", "application/json")
                 .build();
         this.pathService = pathService;
@@ -40,7 +40,7 @@ public class SlackEventService {
         );
 
         webClient.post()
-                .uri("chat.postMessage")
+                .uri(uriBuilder -> uriBuilder.path("/chat.postMessage").build())
                 .header("Authorization", "Bearer " + botToken)
                 .bodyValue(block)
                 .retrieve()
