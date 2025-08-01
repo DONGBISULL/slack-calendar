@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google 연동 오류 - Slack Calendar</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-muted);
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body class="page-container">
+    <div class="content-container">
+        <div class="page-icon">🔗</div>
+        <h1 class="page-title">Google 연동 오류</h1>
+        <p class="page-message">
+            Google Calendar와의 연동 중에 문제가 발생했습니다.<br>
+            다시 시도하거나 관리자에게 문의해주세요.
+        </p>
+        
+        <div class="error-details" th:if="${message}">
+            <strong>오류 상세:</strong><br>
+            <span th:text="${message}">오류 메시지가 여기에 표시됩니다.</span>
+        </div>
+        
+        <div class="btn-group">
+            <a href="/google/auth" class="btn btn-primary">
+                <span class="btn-icon">🔄</span>
+                다시 연동하기
+            </a>
+            <a href="/" class="btn btn-secondary">
+                <span class="btn-icon">🏠</span>
+                홈으로 돌아가기
+            </a>
+        </div>
+    </div>
+</body>
+</html>
