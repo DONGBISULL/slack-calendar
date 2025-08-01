@@ -1,6 +1,6 @@
 spring:
   config:
-    import: optional:classpath:/vault-credentials.properties
+    import: optional:classpath:/credentials.properties
   application:
     name: slack-calendar
   cloud:
@@ -39,7 +39,15 @@ server:
   port: 8085
 
 vault:
-  config-path: 'myapp/data/config/path-mappings'
+  mount-paths:
+    contexts:
+      app:
+        name: 'app-secrets'
+        path: 'myapp'
+      dev:
+        name: ''
+        path: ''
+  config-path: 'config/path-mappings'
 
 slack:
   bot-id: ${slack.bot-id}
@@ -48,7 +56,7 @@ slack:
     client-id: ${slack.bot-client-id}
     # 봇 ID 인증 위한 값
     client-secret: ${slack.bot-client-secret}
-    redirect-uri: ${SLACK_REDIRECT_URI:https://flat-moments-prove.loca.lt/slack/auth}
+    redirect-uri: ${SLACK_REDIRECT_URI:https://whole-bikes-throw.loca.lt/slack/auth}
     # Bot Token Scopes
     bot-scopes:
       - usergroups:read

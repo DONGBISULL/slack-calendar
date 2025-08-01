@@ -36,7 +36,7 @@ public class VaultPathCacheService {
     public Map<String, Object> getAllPaths() {
         try {
             log.info("Loading Vault path mappings from {}", configPath);
-            Map<String, Object> valueMap = service.getSecrets(configPath);
+            Map<String, Object> valueMap = service.getSecrets("app", configPath, Map.class);
             log.info("vaultPathMappings: {}", valueMap.size());
             return valueMap;
         } catch (Exception e) {

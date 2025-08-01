@@ -1,11 +1,88 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>오류</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>설정 오류 - Slack Calendar</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg-muted);
+            transform: translateY(-2px);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        
+        .help-section {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .help-title {
+            font-size: 1.2rem;
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .help-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        
+        .error-details-vault {
+            background: rgba(239, 68, 68, 0.05);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--error-color);
+            margin-bottom: var(--spacing-lg);
+            text-align: left;
+        }
+        
+        .btn-group-vault {
+            margin-bottom: var(--spacing-lg);
+        }
+    </style>
 </head>
-<body>
-<h2> 볼트 오류 페이지 </h2>
-    <span th:text="message"></span>
+<body class="page-container">
+    <div class="content-container">
+        <div class="page-icon">🔧</div>
+        <h1 class="page-title">설정 오류</h1>
+        <p class="page-message">
+            시스템 설정을 불러오는 중에 문제가 발생했습니다.<br>
+            관리자에게 문의하거나 잠시 후 다시 시도해주세요.
+        </p>
+        
+        <div class="error-details-vault" th:if="${message}">
+            <strong>오류 상세:</strong><br>
+            <span th:text="${message}">설정 오류 메시지가 여기에 표시됩니다.</span>
+        </div>
+        
+        <div class="btn-group btn-group-vault">
+            <a href="javascript:location.reload()" class="btn btn-primary">
+                <span class="btn-icon">🔄</span>
+                다시 시도
+            </a>
+            <a href="/" class="btn btn-secondary">
+                <span class="btn-icon">🏠</span>
+                홈으로 돌아가기
+            </a>
+        </div>
+        
+        <div class="help-section">
+            <h3 class="help-title">도움이 필요하신가요?</h3>
+            <p class="help-text">
+                이 문제가 계속 발생한다면 시스템 관리자에게 위의 오류 메시지를 포함하여 문의해주세요.
+            </p>
+        </div>
+    </div>
 </body>
 </html>
