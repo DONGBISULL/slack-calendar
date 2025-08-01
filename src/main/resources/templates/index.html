@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack Calendar - 내 일정을 스마트하게</title>
+    <meta name="description"
+          content="Slack과 Google Calendar를 연동하여 내 일정을 더 쉽게 관리하세요. 실시간 동기화, 스마트 알림, 빠른 일정 생성 기능을 제공합니다.">
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        /* 랜딩 페이지 전용 스타일 */
+        .hero {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 8rem 0 var(--spacing-2xl);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="a" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23a)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: var(--font-weight-extrabold);
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(45deg, #fff, #e8f4f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: var(--spacing-xl);
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .features {
+            padding: var(--spacing-3xl) 0;
+            background: var(--bg-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .feature-card {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .how-it-works {
+            padding: var(--spacing-3xl) 0;
+            background: var(--bg-primary);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: var(--radius-full);
+            font-size: 1.5rem;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--spacing-2xl) 0;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            margin-bottom: var(--spacing-xl);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 6rem 0 var(--spacing-xl);
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                min-width: 280px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <nav class="nav container">
+        <div class="logo">
+            <span class="logo-icon">📅</span>
+            <span>Slack Calendar</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#features">기능</a></li>
+            <li><a href="#how-it-works">사용법</a></li>
+            <li><a href="#install">설치하기</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content fade-in-up">
+            <h1 class="hero-title">내 일정을 더 간편하게</h1>
+            <p class="hero-subtitle">
+                Slack과 Google Calendar를 연동해<br>
+                내 일정을 더 편리하게 관리하세요
+            </p>
+            <div class="cta-buttons">
+                <a href="/slack/install" class="btn btn-primary">
+                    <span class="btn-icon">🚀</span>
+                    지금 시작하기
+                </a>
+                <a href="#how-it-works" class="btn btn-outline">
+                    <span class="btn-icon">📖</span>
+                    사용법 보기
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="container">
+        <h2 class="section-title">강력한 기능들</h2>
+        <p class="section-subtitle">
+            내 일정 관리에 최적화된 기능을 제공합니다
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card card">
+                <span class="feature-icon">🔄</span>
+                <h3 class="feature-title">실시간 동기화</h3>
+                <p class="feature-description">
+                    Google Calendar의 모든 일정이 Slack과 실시간으로 동기화되어
+                    항상 최신 정보를 확인할 수 있습니다.
+                </p>
+            </div>
+
+            <div class="feature-card card">
+                <span class="feature-icon">🔔</span>
+                <h3 class="feature-title">스마트 알림</h3>
+                <p class="feature-description">
+                    중요한 회의나 일정을 놓치지 않도록 Slack을 통해
+                    적시에 알림을 받을 수 있습니다.
+                </p>
+            </div>
+
+            <div class="feature-card card">
+                <span class="feature-icon">⚡</span>
+                <h3 class="feature-title">빠른 일정 생성</h3>
+                <p class="feature-description">
+                    Slack 채팅 중에도 간단한 명령어로 즉시 일정을 생성하고
+                    관리할 수 있습니다.
+                </p>
+            </div>
+
+            <div class="feature-card card">
+                <span class="feature-icon">📊</span>
+                <h3 class="feature-title">일정 분석</h3>
+                <p class="feature-description">
+                    나의 일정 패턴을 분석하여 더 효율적인
+                    시간 관리 방법을 제안합니다.
+                </p>
+            </div>
+
+            <div class="feature-card card">
+                <span class="feature-icon">🔒</span>
+                <h3 class="feature-title">보안</h3>
+                <p class="feature-description">
+                    엔터프라이즈급 보안으로 중요한 일정 정보를
+                    안전하게 보호합니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How it Works -->
+<section id="how-it-works" class="how-it-works">
+    <div class="container">
+        <h2 class="section-title">간단한 3단계 설정</h2>
+        <p class="section-subtitle">
+            몇 분만에 설정을 완료하고 바로 사용을 시작하세요
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Slack에 앱 추가</h3>
+                <p class="step-description">
+                    Slack 워크스페이스에 Slack Calendar 앱을 설치합니다.
+                    관리자 권한이 필요할 수 있습니다.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Google 계정 연동</h3>
+                <p class="step-description">
+                    Google Calendar 접근을 위해 구글 계정을 안전하게 연동합니다.
+                    OAuth 2.0으로 보안이 보장됩니다.
+                </p>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3 class="step-title">사용 시작</h3>
+                <p class="step-description">
+                    설정이 완료되면 Slack에서 내 일정을 확인하고
+                    새로운 일정을 생성할 수 있습니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section id="install" class="cta-section">
+    <div class="container">
+        <h2 class="cta-title">지금 바로 시작하세요!</h2>
+        <p class="cta-description">
+            Slack Calendar로 내 일정을 더 간단하게 관리해보세요
+        </p>
+        <div class="cta-buttons">
+            <a href="/slack/install" class="btn btn-primary">
+                <span class="btn-icon">📲</span>
+                Slack에 추가하기
+            </a>
+            <a href="/google/auth" class="btn btn-outline">
+                <span class="btn-icon">📅</span>
+                Google Calendar 연동
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="logo">
+                <span class="logo-icon">📅</span>
+                <span>Slack Calendar</span>
+            </div>
+            <ul class="footer-links">
+                <li><a href="/privacy">개인정보처리방침</a></li>
+                <li><a href="/terms">이용약관</a></li>
+                <li><a href="/support">고객지원</a></li>
+            </ul>
+            <p>&copy; 2024 Slack Calendar. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Add animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in-up');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all feature cards and steps
+    document.querySelectorAll('.feature-card, .step').forEach(el => {
+        observer.observe(el);
+    });
+</script>
+</body>
+</html>

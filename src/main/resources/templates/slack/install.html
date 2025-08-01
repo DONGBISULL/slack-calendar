@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slack Calendar 연동 - Slack에 추가하기</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        /* 설치 페이지 전용 스타일 */
+        .features-list {
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--spacing-lg);
+            text-align: left;
+        }
+        
+        .features-title {
+            font-size: 1.1rem;
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            text-align: center;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-xs);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .feature-icon {
+            margin-right: var(--spacing-xs);
+            font-size: 1.1rem;
+        }
+        
+        .slack-install-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            text-decoration: none;
+            font-weight: var(--font-weight-semibold);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            min-width: 250px;
+            margin-bottom: var(--spacing-md);
+            gap: var(--spacing-xs);
+        }
+        
+        .slack-install-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+            text-decoration: none;
+            color: white;
+        }
+        
+        .slack-icon {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .help-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        
+        .help-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .help-link:hover {
+            text-decoration: underline;
+        }
+        
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: var(--font-weight-medium);
+            margin-top: var(--spacing-sm);
+            gap: var(--spacing-xs);
+        }
+        
+        .security-icon {
+            font-size: 1rem;
+        }
+        
+        @media (max-width: 480px) {
+            .slack-install-btn {
+                min-width: 100%;
+                padding: var(--spacing-sm) var(--spacing-lg);
+            }
+        }
+    </style>
+</head>
+<body class="page-container">
+    <div class="content-container">
+        <a href="/" class="back-link">←</a>
+        
+        <div class="logo-section">
+            <div class="page-icon">📅</div>
+            <h1 class="page-title">Slack Calendar</h1>
+            <p class="page-message">
+                Slack과 Google Calendar를 연동하여<br>
+                팀의 일정을 더 쉽게 관리하세요
+            </p>
+        </div>
+        
+        <div class="features-list">
+            <h3 class="features-title">✨ 주요 기능</h3>
+            <div class="feature-item">
+                <span class="feature-icon">🔗</span>
+                <span>Google Calendar와 실시간 동기화</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📅</span>
+                <span>Slack에서 바로 일정 확인 및 생성</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🔔</span>
+                <span>중요한 일정에 대한 스마트 알림</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">👥</span>
+                <span>팀원들과 일정 공유 및 협업</span>
+            </div>
+        </div>
+        
+        <a th:href="${installUrl}" class="slack-install-btn">
+            <svg class="slack-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.8 122.8">
+                <path d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V77.6z"
+                      fill="currentColor"></path>
+                <path d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9H45.2zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9h32.3z"
+                      fill="currentColor"></path>
+                <path d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97V45.2zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9v32.3z"
+                      fill="currentColor"></path>
+                <path d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97h12.9zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H77.6z"
+                      fill="currentColor"></path>
+            </svg>
+            Slack에 추가하기
+        </a>
+        
+        <div class="security-badge">
+            <span class="security-icon">🔒</span>
+            안전하고 신뢰할 수 있는 OAuth 인증
+        </div>
+        
+        <p class="help-text">
+            설치 과정에서 문제가 발생하거나 도움이 필요하시면<br>
+            <a href="mailto:support@example.com" class="help-link">고객지원팀</a>으로 연락해주세요.
+        </p>
+    </div>
+</body>
+</html>
